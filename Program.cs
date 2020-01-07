@@ -38,77 +38,37 @@ namespace SampleProject
         // This method reads in the data from the text file and performs the calculations and writes out the output with the date time stamp
         public static void readfile(string locationFile)
         {
-            var fileData = System.IO.File.ReadAllLines(locationFile);
-            
-            foreach (string line in fileData)
+
+            // Try catch error if file is not available
+            bool fileAvailable = false;
+            try
             {
-                // Read in the data from the text file
-                string[] splitFileData = Regex.Split(line, ",");
-                int resultCalculation;
+                var testIfFileAvailable = System.IO.File.ReadAllLines(locationFile);
+                fileAvailable = true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unable to locate the Sample.txt file");
+            }
 
-                if (splitFileData[3] == "Multiplication")
+            if (fileAvailable)
+            {
+                var fileData = System.IO.File.ReadAllLines(locationFile);
+
+                foreach (string line in fileData)
                 {
-                    int value1 = Int32.Parse(splitFileData[0]);
-                    int value2 = Int32.Parse(splitFileData[1]);
-                    int value3 = Int32.Parse(splitFileData[2]);
-                    resultCalculation = value1 * value2 * value3;
+                    // Read in the data from the text file
+                    string[] splitFileData = Regex.Split(line, ",");
+                    int resultCalculation;
 
-                    Console.WriteLine("{0} * {1} * {2} = {3} TimeStamp: {4}", value1, value2, value3, resultCalculation, DateTime.Now.ToString("{HH:MM:ss, dddd, MMMM d, yyyy}"));
-
-                    // If there is an result of less than 0 then call the menthod send email
-                    if (resultCalculation < 0)
+                    if (splitFileData[3] == "Multiplication")
                     {
-                        // Send email using the method sendEmailLessThanZero
-                        sendEmailLessThanZero(splitFileData[3]);
-                    }
-                }
+                        int value1 = Int32.Parse(splitFileData[0]);
+                        int value2 = Int32.Parse(splitFileData[1]);
+                        int value3 = Int32.Parse(splitFileData[2]);
+                        resultCalculation = value1 * value2 * value3;
 
-                if (splitFileData[3] == "Addition")
-                {
-                    int value1 = Int32.Parse(splitFileData[0]);
-                    int value2 = Int32.Parse(splitFileData[1]);
-                    int value3 = Int32.Parse(splitFileData[2]);
-                    resultCalculation = value1 + value2 + value3;
-
-                    Console.WriteLine("{0} + {1} + {2} = {3} TimeStamp: {4}", value1, value2, value3, resultCalculation, DateTime.Now.ToString("{HH:MM:ss, dddd, MMMM d, yyyy}"));
-
-                    // If there is an result of less than 0 then call the menthod send email
-                    if (resultCalculation < 0)
-                    {
-                        // Send email using the method sendEmailLessThanZero
-                        sendEmailLessThanZero(splitFileData[3]);
-                    }
-                }
-
-                if (splitFileData[3] == "Subtraction")
-                {
-                    int value1 = Int32.Parse(splitFileData[0]);
-                    int value2 = Int32.Parse(splitFileData[1]);
-                    int value3 = Int32.Parse(splitFileData[2]);
-                    resultCalculation = value1 - value2 - value3;
-
-                    Console.WriteLine("{0} - {1} - {2} = {3} TimeStamp: {4}", value1, value2, value3, resultCalculation, DateTime.Now.ToString("{HH:MM:ss, dddd, MMMM d, yyyy}"));
-
-                    // If there is an result of less than 0 then call the menthod send email
-                    if (resultCalculation < 0)
-                    {
-                        // Send email using the method sendEmailLessThanZero
-                        sendEmailLessThanZero(splitFileData[3]);
-                    }
-                }
-
-                if (splitFileData[3] == "Division")
-                {
-                    int value1 = Int32.Parse(splitFileData[0]);
-                    int value2 = Int32.Parse(splitFileData[1]);
-                    int value3 = Int32.Parse(splitFileData[2]);
-
-                    // Using a try catch statement to catch if there is a divide by Zero error
-                    try
-                    {
-                        resultCalculation = value1 / value2 / value3;
-
-                        Console.WriteLine("{0} / {1} / {2} = {3} TimeStamp: {4}", value1, value2, value3, resultCalculation, DateTime.Now.ToString("{HH:MM:ss, dddd, MMMM d, yyyy}"));
+                        Console.WriteLine("{0} * {1} * {2} = {3} TimeStamp: {4}", value1, value2, value3, resultCalculation, DateTime.Now.ToString("{HH:MM:ss, dddd, MMMM d, yyyy}"));
 
                         // If there is an result of less than 0 then call the menthod send email
                         if (resultCalculation < 0)
@@ -117,18 +77,74 @@ namespace SampleProject
                             sendEmailLessThanZero(splitFileData[3]);
                         }
                     }
-                    catch (Exception e)
-                    {
-                        string failedCalculation = "Divide by Zero Error";
-                        
-                        Console.WriteLine("{0} / {1} / {2} = {3} TimeStamp: {4}", value1, value2, value3, failedCalculation, DateTime.Now.ToString("{HH:MM:ss, dddd, MMMM d, yyyy}"));
 
-                        // Send email using the method sendEmailLessThanZero
-                        sendEmailLessThanZero("Divide by Zero Error");
+                    if (splitFileData[3] == "Addition")
+                    {
+                        int value1 = Int32.Parse(splitFileData[0]);
+                        int value2 = Int32.Parse(splitFileData[1]);
+                        int value3 = Int32.Parse(splitFileData[2]);
+                        resultCalculation = value1 + value2 + value3;
+
+                        Console.WriteLine("{0} + {1} + {2} = {3} TimeStamp: {4}", value1, value2, value3, resultCalculation, DateTime.Now.ToString("{HH:MM:ss, dddd, MMMM d, yyyy}"));
+
+                        // If there is an result of less than 0 then call the menthod send email
+                        if (resultCalculation < 0)
+                        {
+                            // Send email using the method sendEmailLessThanZero
+                            sendEmailLessThanZero(splitFileData[3]);
+                        }
+                    }
+
+                    if (splitFileData[3] == "Subtraction")
+                    {
+                        int value1 = Int32.Parse(splitFileData[0]);
+                        int value2 = Int32.Parse(splitFileData[1]);
+                        int value3 = Int32.Parse(splitFileData[2]);
+                        resultCalculation = value1 - value2 - value3;
+
+                        Console.WriteLine("{0} - {1} - {2} = {3} TimeStamp: {4}", value1, value2, value3, resultCalculation, DateTime.Now.ToString("{HH:MM:ss, dddd, MMMM d, yyyy}"));
+
+                        // If there is an result of less than 0 then call the menthod send email
+                        if (resultCalculation < 0)
+                        {
+                            // Send email using the method sendEmailLessThanZero
+                            sendEmailLessThanZero(splitFileData[3]);
+                        }
+                    }
+
+                    if (splitFileData[3] == "Division")
+                    {
+                        int value1 = Int32.Parse(splitFileData[0]);
+                        int value2 = Int32.Parse(splitFileData[1]);
+                        int value3 = Int32.Parse(splitFileData[2]);
+
+                        // Using a try catch statement to catch if there is a divide by Zero error
+                        try
+                        {
+                            resultCalculation = value1 / value2 / value3;
+
+                            Console.WriteLine("{0} / {1} / {2} = {3} TimeStamp: {4}", value1, value2, value3, resultCalculation, DateTime.Now.ToString("{HH:MM:ss, dddd, MMMM d, yyyy}"));
+
+                            // If there is an result of less than 0 then call the menthod send email
+                            if (resultCalculation < 0)
+                            {
+                                // Send email using the method sendEmailLessThanZero
+                                sendEmailLessThanZero(splitFileData[3]);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            string failedCalculation = "Divide by Zero Error";
+
+                            Console.WriteLine("{0} / {1} / {2} = {3} TimeStamp: {4}", value1, value2, value3, failedCalculation, DateTime.Now.ToString("{HH:MM:ss, dddd, MMMM d, yyyy}"));
+
+                            // Send email using the method sendEmailLessThanZero
+                            sendEmailLessThanZero("Divide by Zero Error");
+                        }
                     }
                 }
             }
-            
+
         }
 
         // This method using the Google API to send emails
